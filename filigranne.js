@@ -21,8 +21,12 @@ upload.addEventListener('change', function(e) {
       for (let index = 0; index < pages.length; index++) {
         let currentpage = pages[index];
         let { width, height } = currentpage.getSize();
-        currentpage.moveTo(width-widthetexte,height-widthetexte)
 
+        if (width > height) {
+          currentpage.moveTo(width/3,height/4);
+        }else {
+          currentpage.moveTo(width/4,height/4);
+        }
         currentpage.drawText(filigranetext, {
           size: 50,
           font: helveticaFont,
@@ -30,6 +34,8 @@ upload.addEventListener('change', function(e) {
           rotate: degrees(45),
           opacity : opacityuser
         });
+
+
         
       }
       const pdfBytes = await pdfDoc.save();
