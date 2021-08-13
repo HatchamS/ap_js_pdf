@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <form>
+    <p> Veuillez indiqué le nom de sortie du fichier, l'opacité, et le texte en filigrane. Il est inutile de préciser l'extension du fichier </p>
+    <input type="text" id="nomdesortie"/>
+    <input type="number" id="opacityuserinput" min="0" max="1" step="0.1">
+    <input type="text" id="textinput" value="COPIE CONFORME"/>
+    <p>Séléctionner le fichier à modifier</p>
+    <input type="file" id="pdfselector" accept="application/pdf,.pdf" />
+    <script src="JS/pdf-lib.js"></script>
+    <script src="JS/download.js"></script>
+    <script src="JS/filigranne.js"></script>
+
+  </form>
+    
+  </body>
+</body>
+</html>
