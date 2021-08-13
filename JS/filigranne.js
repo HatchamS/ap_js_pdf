@@ -7,30 +7,35 @@ upload.addEventListener('change', function(e) {
     const reader = new FileReader();
 
     reader.onload = async function(file) {
-      let originpdf = file.target.result;
+      const originpdf = file.target.result;
       const pdfDoc =  await PDFDocument.load(originpdf);
 
       const helveticaFont =  await pdfDoc.embedFont(StandardFonts.Helvetica);
-      var filigranetext = document.getElementById("textinput").value;
+      const filigranetext = document.getElementById("textinput").value;
       const pages = pdfDoc.getPages();
-      const firstPage = pages[0];
-      var opacityuser = Number(document.getElementById('opacityuserinput').value);
-      const tailletexte = helveticaFont.widthOfTextAtSize(filigranetext, 50);
+      
+      const opacityuser = Number(document.getElementById('opacityuserinput').value);
+
+      const widthetexte = helveticaFont.widthOfTextAtSize(filigranetext, 50);
 
       for (let index = 0; index < pages.length; index++) {
-        const currentpage = pages[index];
-        const { width, height } = currentpage.getSize();
+        let currentpage = pages[index];
+        let { width, height } = currentpage.getSize();
 
+        if (width > height) {
+          currentpage.moveTo(width/3,height/4);
+        }else {
+          currentpage.moveTo(width/4,height/4);
+        }
         currentpage.drawText(filigranetext, {
-          x: width - tailletexte,
-          y: height - tailletexte ,
           size: 50,
           font: helveticaFont,
           color: rgb(0.95, 0.1, 0.1),
           rotate: degrees(45),
           opacity : opacityuser
         });
-        
+
+
         
       }
       const pdfBytes = await pdfDoc.save();
