@@ -1,4 +1,7 @@
 const { degrees, PDFDocument, rgb, StandardFonts } = PDFLib
+const body = document.body
+var chargement = document.createElement("p");
+chargement.textContent="Début du processus";
 
 var upload = document.getElementById('pdfselector');
 
@@ -6,6 +9,9 @@ upload.addEventListener('change', function(e) {
   if (upload.files["0"].type == "application/pdf"){
     const reader = new FileReader();
 
+    reader.onloadstart = function(){
+      body.append(chargement);
+    }
     reader.onload = async function(file) {
       const originpdf = file.target.result;
       const pdfDoc =  await PDFDocument.load(originpdf);
@@ -16,7 +22,6 @@ upload.addEventListener('change', function(e) {
       
       const opacityuser = Number(document.getElementById('opacityuserinput').value);
 
-      const widthetexte = helveticaFont.widthOfTextAtSize(filigranetext, 50);
 
       for (let index = 0; index < pages.length; index++) {
         let currentpage = pages[index];
@@ -38,25 +43,23 @@ upload.addEventListener('change', function(e) {
 
         
       }
-      const pdfBytes = await pdfDoc.save();
+      const pdfBytes = pdfDoc.save();
+
       if (document.getElementById('nomdesortie').value) {
         var namefile = document.getElementById('nomdesortie').value;
 
       } else{
         var namefile = upload.files[0]["name"]
       }
-
+      
+      chargement.textContent="Le processus s'est exécuté avec succès.";
       download(pdfBytes, namefile, "application/pdf");
-    
     }
+
     reader.readAsArrayBuffer(upload.files[0]);
+
   } else {
     alert("Erreur veuillez choisir un document PDF.")
   }
 });
 
-
-
-  
-
-  
