@@ -1,7 +1,9 @@
 const { degrees, PDFDocument, rgb, StandardFonts } = PDFLib
 const body = document.body
-var chargement = document.createElement("p");
-chargement.textContent="Début du processus";
+var messagedone = document.createElement("span");
+messagedone.textContent="Le processus s'est exécuté avec succès.";
+var chargement = document.createElement("progress");
+chargement.value=0;
 
 var upload = document.getElementById('pdfselector');
 
@@ -13,6 +15,9 @@ upload.addEventListener('change', function(e) {
       body.append(chargement);
     }
     reader.onload = async function(file) {
+      let progresstask = file.total/file.loaded*100;
+      chargement.value=progresstask;
+      
       const originpdf = file.target.result;
       const pdfDoc =  await PDFDocument.load(originpdf);
 
@@ -52,7 +57,7 @@ upload.addEventListener('change', function(e) {
         var namefile = upload.files[0]["name"]
       }
       
-      chargement.textContent="Le processus s'est exécuté avec succès.";
+      body.append(messagedone);
       download(pdfBytes, namefile, "application/pdf");
     }
 
