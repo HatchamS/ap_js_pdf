@@ -7,6 +7,7 @@ chargement.value=0;
 
 var messagedone = document.createElement("label");
 messagedone.setAttribute("for","progressbar");
+messagedone.textContent =" Le processus est en cours d'exécution, veuillez patientez.";
 
 var upload = document.getElementById('pdfselector');
 
@@ -19,6 +20,7 @@ upload.addEventListener('change', function(e) {
       body.append(messagedone);
     }
     reader.onload = async function(file) {
+      
 
       
       const originpdf = file.target.result;
@@ -53,11 +55,7 @@ upload.addEventListener('change', function(e) {
         
       }
 
-      const pdfBytes = new FileReader(pdfDoc.save());
-
-      while (!pdfBytes.DONE) {
-        messagedone.textContent =" Le processus est en cours d'exécution, veuillez patientez.";
-      }
+      const pdfBytes = await pdfDoc.save();
 
       chargement.value=100;
       messagedone.textContent=" Le processus s'est exécuté avec succès.";
