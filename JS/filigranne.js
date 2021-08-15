@@ -3,11 +3,11 @@ const body = document.body;
 
 var chargement = document.createElement("progress");
 chargement.setAttribute("id","progressbar");
-chargement.value=0;
+
 
 var messagedone = document.createElement("label");
 messagedone.setAttribute("for","progressbar");
-messagedone.textContent =" Le processus est en cours d'exécution, veuillez patientez.";
+
 
 var upload = document.getElementById('pdfselector');
 
@@ -17,11 +17,18 @@ upload.addEventListener('change', function(e) {
 
     reader.onloadstart = function(){
       body.append(chargement);
+      chargement.value=0;
       body.append(messagedone);
     }
+    reader.onloadend = function(){
+      chargement.value=100;
+      messagedone.textContent =" Le document à été charger avec succès";
+      window.setTimeout(() => {
+        chargement.value=0;
+        messagedone.textContent =" Le processus filigrane est en cours d'exécution, veuillez patientez.";
+      }, 200);
+    }
     reader.onload = async function(file) {
-      
-
       
       const originpdf = file.target.result;
       const pdfDoc =  await PDFDocument.load(originpdf);
@@ -30,9 +37,7 @@ upload.addEventListener('change', function(e) {
       const filigranetext = document.getElementById("textinput").value;
       const pages = pdfDoc.getPages();
 
-      
       const opacityuser = Number(document.getElementById('opacityuserinput').value);
-
 
       for (let index = 0; index < pages.length; index++) {
         let currentpage = pages[index];
@@ -67,7 +72,6 @@ upload.addEventListener('change', function(e) {
         var namefile = upload.files[0]["name"]
       }
 
-      
       download(pdfBytes, namefile, "application/pdf");
     }
 
