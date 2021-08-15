@@ -1,13 +1,12 @@
-const { degrees, PDFDocument, rgb, StandardFonts } = PDFLib
-const body = document.body
+const { degrees, PDFDocument, rgb, StandardFonts } = PDFLib;
+const body = document.body;
 
 var chargement = document.createElement("progress");
-chargement.setAttribute("id","progressbar")
+chargement.setAttribute("id","progressbar");
 chargement.value=0;
 
 var messagedone = document.createElement("label");
-messagedone.setAttribute("for","progressbar")
-messagedone.textContent=" Le processus s'est exécuté avec succès.";
+messagedone.setAttribute("for","progressbar");
 
 var upload = document.getElementById('pdfselector');
 
@@ -17,10 +16,10 @@ upload.addEventListener('change', function(e) {
 
     reader.onloadstart = function(){
       body.append(chargement);
+      body.append(messagedone);
     }
     reader.onload = async function(file) {
-      let progresstask = file.total/file.loaded*100;
-      chargement.value=progresstask;
+
       
       const originpdf = file.target.result;
       const pdfDoc =  await PDFDocument.load(originpdf);
@@ -28,6 +27,7 @@ upload.addEventListener('change', function(e) {
       const helveticaFont =  await pdfDoc.embedFont(StandardFonts.Helvetica);
       const filigranetext = document.getElementById("textinput").value;
       const pages = pdfDoc.getPages();
+
       
       const opacityuser = Number(document.getElementById('opacityuserinput').value);
 
@@ -52,7 +52,15 @@ upload.addEventListener('change', function(e) {
 
         
       }
-      const pdfBytes = pdfDoc.save();
+
+      const pdfBytes = new FileReader(pdfDoc.save());
+
+      while (!pdfBytes.DONE) {
+        messagedone.textContent =" Le processus est en cours d'exécution, veuillez patientez.";
+      }
+
+      chargement.value=100;
+      messagedone.textContent=" Le processus s'est exécuté avec succès.";
 
       if (document.getElementById('nomdesortie').value) {
         var namefile = document.getElementById('nomdesortie').value;
@@ -60,8 +68,8 @@ upload.addEventListener('change', function(e) {
       } else{
         var namefile = upload.files[0]["name"]
       }
+
       
-      body.append(messagedone);
       download(pdfBytes, namefile, "application/pdf");
     }
 
