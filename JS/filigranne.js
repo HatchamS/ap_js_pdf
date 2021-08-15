@@ -1,9 +1,13 @@
 const { degrees, PDFDocument, rgb, StandardFonts } = PDFLib
 const body = document.body
-var messagedone = document.createElement("span");
-messagedone.textContent="Le processus s'est exécuté avec succès.";
+
 var chargement = document.createElement("progress");
+chargement.setAttribute("id","progressbar")
 chargement.value=0;
+
+var messagedone = document.createElement("label");
+messagedone.setAttribute("for","progressbar")
+messagedone.textContent=" Le processus s'est exécuté avec succès.";
 
 var upload = document.getElementById('pdfselector');
 
