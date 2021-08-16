@@ -62,8 +62,7 @@ upload.addEventListener('change', function(e) {
 
       const pdfBytes = await pdfDoc.save();
 
-      chargement.value=100;
-      messagedone.textContent=" Le processus s'est exécuté avec succès.";
+
 
       if (document.getElementById('nomdesortie').value) {
         var namefile = document.getElementById('nomdesortie').value;
@@ -73,6 +72,8 @@ upload.addEventListener('change', function(e) {
       }
 
       download(pdfBytes, namefile, "application/pdf");
+      chargement.value=100;
+      messagedone.textContent=" Le processus s'est exécuté avec succès.";
     }
 
     reader.readAsArrayBuffer(upload.files[0]);
