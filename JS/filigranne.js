@@ -21,14 +21,10 @@ upload.addEventListener('change', function(e) {
       body.append(messagedone);
     }
     reader.onloadend = function(){
-      chargement.value=100;
-      messagedone.textContent =" Le document à été charger avec succès";
-      window.setTimeout(() => {
-        chargement.value=0;
-        messagedone.textContent =" Le processus filigrane est en cours d'exécution, veuillez patientez.";
-      }, 200);
+      messagedone.textContent =" Le processus filigrane est en cours d'exécution, veuillez patientez.";            
     }
     reader.onload = async function(file) {
+     
       
       const originpdf = file.target.result;
       const pdfDoc =  await PDFDocument.load(originpdf);
@@ -70,7 +66,7 @@ upload.addEventListener('change', function(e) {
       } else{
         var namefile = upload.files[0]["name"]
       }
-
+      
       download(pdfBytes, namefile, "application/pdf");
       chargement.value=100;
       messagedone.textContent=" Le processus s'est exécuté avec succès.";
